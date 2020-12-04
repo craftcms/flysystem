@@ -1,0 +1,39 @@
+{
+  "name": "craftcms/craft-flysystem",
+  "description": "Flysystem integration plugin for Craft CMS 4",
+  "version": "1.0.0",
+  "keywords": [
+    "flysystem",
+    "craftcms",
+    "yii2"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pixel & Tonic",
+      "homepage": "https://pixelandtonic.com/"
+    }
+  ],
+  "support": {
+    "email": "support@craftcms.com",
+    "issues": "https://github.com/craftcms/craft-flysystem/issues?state=open",
+    "source": "https://github.com/craftcms/craft-flysystem",
+    "docs": "https://github.com/craftcms/craft-flysystem",
+    "rss": "https://github.com/craftcms/craft-flysystem/commits/master.atom"
+  },
+  "require": {
+    "craftcms/craft": "^4.0.0-alpha",
+    "league/flysystem": "^2.0.0-RC1"
+  },
+  "autoload": {
+    "psr-4": {
+      "craft\\flysystem\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Flysystem for Craft",
+    "handle": "craft-flysytem",
+    "changelogUrl": "https://raw.githubusercontent.com/craftcms/craft-flysystem/main/CHANGELOG.md",
+    "downloadUrl": "https://github.com/craftcms/craft-flysystem/archive/main.zip"
+  }
+}
