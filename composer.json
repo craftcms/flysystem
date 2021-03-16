@@ -1,7 +1,7 @@
 {
   "name": "craftcms/craft-flysystem",
   "description": "Flysystem integration plugin for Craft CMS 4",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "keywords": [
     "flysystem",
     "craftcms",
@@ -22,7 +22,7 @@
     "rss": "https://github.com/craftcms/craft-flysystem/commits/master.atom"
   },
   "require": {
-    "craftcms/craft": "^4.0.0-alpha",
+    "craftcms/cms": "^4.0.0-alpha.1",
     "league/flysystem": "^2.0.0-RC1"
   },
   "autoload": {
