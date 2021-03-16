@@ -229,12 +229,12 @@ abstract class FlysystemVolume extends Volume
         $pattern = '/^' . preg_quote($path, '/') . '/';
 
         // Rename every file and build a list of directories
-        foreach ($fileList as $object) {
-            if ($object['type'] !== 'dir') {
-                $objectPath = preg_replace($pattern, $newPath, $object['path']);
-                $this->renameFile($object['path'], $objectPath);
+        foreach ($fileList as $listing) {
+            if (!$listing->getIsDir()) {
+                $objectPath = preg_replace($pattern, $newPath, $listing->getUri());
+                $this->renameFile($listing->getUri(), $objectPath);
             } else {
-                $directoryList[] = $object['path'];
+                $directoryList[] = $listing->getUri();
             }
         }
 
