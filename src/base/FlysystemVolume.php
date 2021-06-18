@@ -58,7 +58,6 @@ abstract class FlysystemVolume extends Volume
 
         /** @var StorageAttributes $entry */
         foreach ($fileList as $entry) {
-            ray($entry);
             yield new VolumeListing([
                 'dirname' => pathinfo($entry->path(), PATHINFO_DIRNAME),
                 'basename' => pathinfo($entry->path(), PATHINFO_BASENAME),
@@ -228,20 +227,27 @@ abstract class FlysystemVolume extends Volume
 
         $pattern = '/^' . preg_quote($path, '/') . '/';
 
+        $hasFiles = false;
+
         // Rename every file and build a list of directories
         foreach ($fileList as $listing) {
             if (!$listing->getIsDir()) {
                 $objectPath = preg_replace($pattern, $newPath, $listing->getUri());
                 $this->renameFile($listing->getUri(), $objectPath);
+                $hasFiles = true;
             } else {
                 $directoryList[] = $listing->getUri();
             }
         }
 
-        // It's possible for a folder object to not exist on remote volumes, so to throw an exception
-        // we must make sure that there are no files AS WELL as no folder.
-        if (empty($fileList) && !$this->directoryExists($path)) {
-            throw new VolumeObjectNotFoundException('No folder exists at path: ' . $path);
+        // Rename the actual directory.
+        if (!$hasFiles) {
+            if (!$this->directoryExists($path)) {
+                throw new VolumeObjectNotFoundException('No folder exists at path: ' . $path);
+            }
+
+            $this->deleteDirectory($path);
+            $this->createDirectory($newPath);
         }
 
         // The files are moved, but the directories remain. Delete them.
