@@ -29,11 +29,5 @@
     "psr-4": {
       "craft\\flysystem\\": "src/"
     }
-  },
-  "extra": {
-    "name": "Flysystem for Craft",
-    "handle": "craft-flysytem",
-    "changelogUrl": "https://raw.githubusercontent.com/craftcms/craft-flysystem/main/CHANGELOG.md",
-    "downloadUrl": "https://github.com/craftcms/craft-flysystem/archive/main.zip"
   }
 }
