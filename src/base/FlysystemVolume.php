@@ -64,7 +64,7 @@ abstract class FlysystemVolume extends Volume
                 'type' => $entry->isDir() ? 'dir' : 'file',
                 'dateModified' => $entry->lastModified(),
                 'fileSize' => $entry instanceof FileAttributes ? $entry->fileSize() : null,
-                'volume' => $this
+                'volume' => $this,
             ]);
         }
     }
@@ -301,7 +301,7 @@ abstract class FlysystemVolume extends Volume
     protected function addFileMetadataToConfig(array $config): array
     {
         $config = array_merge($config, [
-            self::CONFIG_VISIBILITY => $this->visibility()
+            self::CONFIG_VISIBILITY => $this->visibility(),
         ]);
 
         return $config;
