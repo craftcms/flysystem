@@ -25,9 +25,15 @@
     "craftcms/cms": "4.0.x-dev",
     "league/flysystem": "^2.0.0-RC1"
   },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.96"
+  },
   "autoload": {
     "psr-4": {
       "craft\\flysystem\\": "src/"
     }
+  },
+  "scripts": {
+    "phpstan": "phpstan --memory-limit=1G"
   }
 }

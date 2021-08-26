@@ -29,6 +29,7 @@ use League\Flysystem\UnableToReadFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnableToWriteFile;
 use League\Flysystem\Visibility;
+use Throwable;
 
 /**
  * FlysystemVolume is the base class for Flysystem-based volume classes.
@@ -43,7 +44,7 @@ abstract class FlysystemVolume extends Volume
     /**
      * @var FilesystemAdapter|null The Flysystem adapter, created by [[createAdapter()]]
      */
-    private FilesystemAdapter $_adapter;
+    private ?FilesystemAdapter $_adapter = null;
 
     /**
      * @inheritdoc
@@ -70,7 +71,7 @@ abstract class FlysystemVolume extends Volume
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getFileSize(string $uri): int
     {
@@ -82,7 +83,7 @@ abstract class FlysystemVolume extends Volume
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      * @throws VolumeException
      */
     public function getDateModified(string $uri): int
@@ -95,7 +96,7 @@ abstract class FlysystemVolume extends Volume
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function writeFileFromStream(string $path, $stream, array $config = []): void
     {
@@ -115,7 +116,7 @@ abstract class FlysystemVolume extends Volume
         try {
             return $this->filesystem()->fileExists($path);
         } catch (FilesystemException $exception) {
-            throw new VolumeException("Unable to check if {$path} exists", 0, $exception);
+            throw new VolumeException("Unable to check if $path exists", 0, $exception);
         }
     }
 
@@ -254,7 +255,7 @@ abstract class FlysystemVolume extends Volume
         foreach ($directoryList as $dir) {
             try {
                 $this->deleteDirectory($dir);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 // This really varies between volume types and whether folders are virtual or real
                 // So just in case, catch the exception, log it and then move on
                 Craft::warning($e->getMessage());
@@ -300,11 +301,9 @@ abstract class FlysystemVolume extends Volume
      */
     protected function addFileMetadataToConfig(array $config): array
     {
-        $config = array_merge($config, [
+        return array_merge($config, [
             self::CONFIG_VISIBILITY => $this->visibility(),
         ]);
-
-        return $config;
     }
 
     /**
