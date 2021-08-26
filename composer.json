@@ -22,7 +22,7 @@
     "rss": "https://github.com/craftcms/craft-flysystem/commits/master.atom"
   },
   "require": {
-    "craftcms/cms": "4.0.x-dev",
+    "craftcms/cms": "^4.0.0-alpha",
     "league/flysystem": "^2.0.0-RC1"
   },
   "require-dev": {
