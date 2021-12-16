@@ -21,19 +21,20 @@
     "docs": "https://github.com/craftcms/craft-flysystem",
     "rss": "https://github.com/craftcms/craft-flysystem/commits/master.atom"
   },
+  "minimum-stability": "dev",
   "require": {
-    "craftcms/cms": "^4.0.0-alpha.1",
+    "craftcms/cms": "^4.0.0-alpha",
     "league/flysystem": "^2.0.0-RC1"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.96"
   },
   "autoload": {
     "psr-4": {
       "craft\\flysystem\\": "src/"
     }
   },
-  "extra": {
-    "name": "Flysystem for Craft",
-    "handle": "craft-flysytem",
-    "changelogUrl": "https://raw.githubusercontent.com/craftcms/craft-flysystem/main/CHANGELOG.md",
-    "downloadUrl": "https://github.com/craftcms/craft-flysystem/archive/main.zip"
+  "scripts": {
+    "phpstan": "phpstan --memory-limit=1G"
   }
 }
