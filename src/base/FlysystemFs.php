@@ -10,13 +10,14 @@ declare(strict_types=1);
 namespace craft\flysystem\base;
 
 use Craft;
-use craft\base\Volume;
+use craft\base\Fs;
+use craft\errors\FsException;
+use craft\errors\FsObjectNotFoundException;
 use craft\errors\VolumeException;
-use craft\errors\VolumeObjectNotFoundException;
-use craft\models\VolumeListing;
+use craft\models\FsListing;
 use Generator;
 use League\Flysystem\FileAttributes;
-use League\Flysystem\Filesystem;
+use League\Flysystem\Filesystem as FlysystemFilesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
@@ -33,7 +34,7 @@ use League\Flysystem\Visibility;
 /**
  * FlysystemVolume is the base class for Flysystem-based volume classes.
  */
-abstract class FlysystemVolume extends Volume
+abstract class FlysystemFs extends Fs
 {
     /**
      * @var bool Whether the Flysystem adapter expects folder names to have trailing slashes
@@ -53,18 +54,17 @@ abstract class FlysystemVolume extends Volume
         try {
             $fileList = $this->filesystem()->listContents($directory, $recursive);
         } catch (FilesystemException $exception) {
-            throw new VolumeException('Unable to list files' . (!empty($directory) ? " in $directory" : ''), 0, $exception);
+            throw new FsException('Unable to list files' . (!empty($directory) ? " in $directory" : ''), 0, $exception);
         }
 
         /** @var StorageAttributes $entry */
         foreach ($fileList as $entry) {
-            yield new VolumeListing([
+            yield new FsListing([
                 'dirname' => pathinfo($entry->path(), PATHINFO_DIRNAME),
                 'basename' => pathinfo($entry->path(), PATHINFO_BASENAME),
                 'type' => $entry->isDir() ? 'dir' : 'file',
                 'dateModified' => $entry->lastModified(),
                 'fileSize' => $entry instanceof FileAttributes ? $entry->fileSize() : null,
-                'volume' => $this
             ]);
         }
     }
@@ -77,7 +77,7 @@ abstract class FlysystemVolume extends Volume
         try {
             return $this->filesystem()->fileSize($uri);
         } catch (FilesystemException | UnableToRetrieveMetadata $exception) {
-            throw new VolumeException("Unable to get filesize for “{$uri}”", 0, $exception);
+            throw new FsException("Unable to get filesize for “{$uri}”", 0, $exception);
         }
     }
 
@@ -90,7 +90,7 @@ abstract class FlysystemVolume extends Volume
         try {
             return $this->filesystem()->lastModified($uri);
         } catch (FilesystemException | UnableToRetrieveMetadata $exception) {
-            throw new VolumeException("Unable to get date modified for “{$uri}”", 0, $exception);
+            throw new FsException("Unable to get date modified for “{$uri}”", 0, $exception);
         }
     }
 
@@ -103,7 +103,7 @@ abstract class FlysystemVolume extends Volume
             $config = $this->addFileMetadataToConfig($config);
             $this->filesystem()->writeStream($path, $stream, $config);
         } catch (FilesystemException | UnableToWriteFile $exception) {
-            throw new VolumeException("Unable to write stream to “{$path}”", 0, $exception);
+            throw new FsException("Unable to write stream to “{$path}”", 0, $exception);
         }
     }
 
@@ -115,7 +115,7 @@ abstract class FlysystemVolume extends Volume
         try {
             return $this->filesystem()->fileExists($path);
         } catch (FilesystemException $exception) {
-            throw new VolumeException("Unable to check if {$path} exists", 0, $exception);
+            throw new FsException("Unable to check if {$path} exists", 0, $exception);
         }
     }
 
@@ -142,7 +142,7 @@ abstract class FlysystemVolume extends Volume
         try {
             $this->filesystem()->move($path, $newPath);
         } catch (FilesystemException | UnableToMoveFile $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -154,7 +154,7 @@ abstract class FlysystemVolume extends Volume
         try {
             $this->filesystem()->copy($path, $newPath);
         } catch (FilesystemException | UnableToCopyFile $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -166,7 +166,7 @@ abstract class FlysystemVolume extends Volume
         try {
             $stream = $this->filesystem()->readStream($uriPath);
         } catch (FilesystemException | UnableToReadFile $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
 
         return $stream;
@@ -181,7 +181,7 @@ abstract class FlysystemVolume extends Volume
             // Calling adapter directly instead of filesystem to avoid losing the trailing slash (if any)
             return $this->adapter()->fileExists(rtrim($path, '/') . ($this->foldersHaveTrailingSlashes ? '/' : ''));
         } catch (FilesystemException $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -193,7 +193,7 @@ abstract class FlysystemVolume extends Volume
         try {
             $this->filesystem()->createDirectory($path, $config);
         } catch (FilesystemException | UnableToCreateDirectory $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -205,7 +205,7 @@ abstract class FlysystemVolume extends Volume
         try {
             $this->filesystem()->deleteDirectory($path);
         } catch (FilesystemException | UnableToDeleteDirectory $exception) {
-            throw new VolumeException($exception->getMessage(), 0, $exception);
+            throw new FsException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -243,7 +243,7 @@ abstract class FlysystemVolume extends Volume
         // Rename the actual directory.
         if (!$hasFiles) {
             if (!$this->directoryExists($path)) {
-                throw new VolumeObjectNotFoundException('No folder exists at path: ' . $path);
+                throw new FsObjectNotFoundException('No folder exists at path: ' . $path);
             }
 
             $this->deleteDirectory($path);
@@ -284,12 +284,12 @@ abstract class FlysystemVolume extends Volume
      * Returns Flysystem filesystem configured with the Flysystem adapter.
      *
      * @param array $config
-     * @return Filesystem The Flysystem filesystem.
+     * @return FlysystemFilesystem The Flysystem filesystem.
      */
-    protected function filesystem(array $config = []): Filesystem
+    protected function filesystem(array $config = []): FlysystemFilesystem
     {
         // Constructing a Filesystem is super cheap and we always get the config we want, so no caching.
-        return new Filesystem($this->adapter(), $config);
+        return new FlysystemFilesystem($this->adapter(), $config);
     }
 
     /**
