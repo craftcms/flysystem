@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 /**
- * The base class for all flysystem Volumes. All Flysystem Volume types must extend this class.
- *
- * @author Pixel & Tonic, Inc. <support@pixelandtonic.com>
- * @since 1.0.0
+ * @link https://craftcms.com/
+ * @copyright Copyright (c) Pixel & Tonic, Inc.
+ * @license https://craftcms.github.io/license/
  */
 
 namespace craft\flysystem\base;
@@ -13,7 +12,6 @@ use Craft;
 use craft\base\Fs;
 use craft\errors\FsException;
 use craft\errors\FsObjectNotFoundException;
-use craft\errors\VolumeException;
 use craft\models\FsListing;
 use Generator;
 use League\Flysystem\FileAttributes;
@@ -33,7 +31,10 @@ use League\Flysystem\Visibility;
 use Throwable;
 
 /**
- * FlysystemVolume is the base class for Flysystem-based volume classes.
+ * FlysystemFs provides a base implementation for Flysystem-powered filesystem types.
+ *
+ * @author Pixel & Tonic, Inc. <support@pixelandtonic.com>
+ * @since 1.0.0
  */
 abstract class FlysystemFs extends Fs
 {
@@ -43,9 +44,10 @@ abstract class FlysystemFs extends Fs
     protected bool $foldersHaveTrailingSlashes = true;
 
     /**
-     * @var FilesystemAdapter|null The Flysystem adapter, created by [[createAdapter()]]
+     * @var FilesystemAdapter The Flysystem adapter
+     * @see adapter()
      */
-    private ?FilesystemAdapter $_adapter = null;
+    private FilesystemAdapter $_adapter;
 
     /**
      * @inheritdoc
@@ -84,7 +86,7 @@ abstract class FlysystemFs extends Fs
 
     /**
      * @inheritdoc
-     * @throws VolumeException
+     * @throws FsException
      */
     public function getDateModified(string $uri): int
     {
@@ -116,7 +118,7 @@ abstract class FlysystemFs extends Fs
         try {
             return $this->filesystem()->fileExists($path);
         } catch (FilesystemException $exception) {
-            throw new FsException("Unable to check if {$path} exists", 0, $exception);
+            throw new FsException("Unable to check if $path exists", 0, $exception);
         }
     }
 
@@ -278,7 +280,10 @@ abstract class FlysystemFs extends Fs
      */
     protected function adapter(): FilesystemAdapter
     {
-        return $this->_adapter ?? ($this->_adapter = $this->createAdapter());
+        if (!isset($this->_adapter)) {
+            $this->_adapter = $this->createAdapter();
+        }
+        return $this->_adapter;
     }
 
     /**
@@ -310,12 +315,8 @@ abstract class FlysystemFs extends Fs
      * Invalidate a CDN path on the Volume.
      *
      * @param string $path the path to invalidate
-     * @return bool
      */
-    protected function invalidateCdnPath(string $path): bool
-    {
-        return true;
-    }
+    abstract protected function invalidateCdnPath(string $path): void;
 
     /**
      * Returns the visibility setting for the Volume.
