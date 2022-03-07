@@ -315,8 +315,9 @@ abstract class FlysystemFs extends Fs
      * Invalidate a CDN path on the Volume.
      *
      * @param string $path the path to invalidate
+     * @return bool Whether the operation was successful.
      */
-    abstract protected function invalidateCdnPath(string $path): void;
+    abstract protected function invalidateCdnPath(string $path): bool;
 
     /**
      * Returns the visibility setting for the Volume.
