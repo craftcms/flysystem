@@ -1,7 +1,6 @@
 {
   "name": "craftcms/craft-flysystem",
   "description": "Base Flysystem implementation for Craft CMS",
-  "version": "1.0.0-alpha.2",
   "keywords": [
     "flysystem",
     "craftcms",
