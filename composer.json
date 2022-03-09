@@ -1,6 +1,6 @@
 {
   "name": "craftcms/craft-flysystem",
-  "description": "Flysystem integration plugin for Craft CMS 4",
+  "description": "Base Flysystem implementation for Craft CMS",
   "version": "1.0.0-alpha.2",
   "keywords": [
     "flysystem",

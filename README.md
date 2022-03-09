@@ -1,3 +1,3 @@
-Flysystem integration plugin for Craft CMS 4
-=======================
-This package is required for Flysystem-based volume plugins.
+# craftcms/flysystem
+
+This package provides a base implementation for [Flysystem](https://github.com/thephpleague/flysystem)-powered filesystem types in Craft CMS.

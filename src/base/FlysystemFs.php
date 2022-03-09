@@ -259,7 +259,7 @@ abstract class FlysystemFs extends Fs
             try {
                 $this->deleteDirectory($dir);
             } catch (Throwable $e) {
-                // This really varies between volume types and whether folders are virtual or real
+                // This really varies between filesystem types and whether file directories are virtual or real
                 // So just in case, catch the exception, log it and then move on
                 Craft::warning($e->getMessage());
                 continue;
@@ -268,7 +268,7 @@ abstract class FlysystemFs extends Fs
     }
 
     /**
-     * Creates and returns a Flysystem adapter instance based on the stored settings.
+     * Creates a Flysystem adapter instance based on the stored settings.
      *
      * @return FilesystemAdapter The Flysystem adapter.
      */
@@ -288,7 +288,7 @@ abstract class FlysystemFs extends Fs
     }
 
     /**
-     * Returns Flysystem filesystem configured with the Flysystem adapter.
+     * Creates a Flysystem filesystem configured with the Flysystem adapter.
      *
      * @param array $config
      * @return FlysystemFilesystem The Flysystem filesystem.
@@ -313,7 +313,7 @@ abstract class FlysystemFs extends Fs
     }
 
     /**
-     * Invalidate a CDN path on the Volume.
+     * Invalidates a CDN path on the filesystem.
      *
      * @param string $path the path to invalidate
      * @return bool Whether the operation was successful.
@@ -321,7 +321,7 @@ abstract class FlysystemFs extends Fs
     abstract protected function invalidateCdnPath(string $path): bool;
 
     /**
-     * Returns the visibility setting for the Volume.
+     * Returns the visibility setting for the filesystem.
      *
      * @return string
      */
