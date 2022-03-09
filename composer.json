@@ -29,6 +29,7 @@
     "league/flysystem": "^3.0.0"
   },
   "require-dev": {
+    "craftcms/ecs": "dev-main",
     "craftcms/phpstan": "dev-main",
     "craftcms/rector": "dev-main"
   },
@@ -38,6 +39,8 @@
     }
   },
   "scripts": {
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --ansi --fix",
     "phpstan": "phpstan --memory-limit=1G"
   },
   "config": {
