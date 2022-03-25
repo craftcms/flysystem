@@ -100,6 +100,35 @@ abstract class FlysystemFs extends Fs
 
     /**
      * @inheritdoc
+     * @throws FsException
+     */
+    public function write(string $path, string $contents, array $config = []): void
+    {
+        try {
+            $config = $this->addFileMetadataToConfig($config);
+            $this->filesystem()->write($path, $contents, $config);
+        } catch (FilesystemException | UnableToWriteFile $exception) {
+            throw new FsException("Unable to write to “{$path}”", 0, $exception);
+        }
+}
+
+    /**
+     * @inheritdoc
+     * @throws FsException
+     */
+    public function read(string $path): string
+    {
+        try {
+            $contents = $this->filesystem()->read($path);
+        } catch (FilesystemException | UnableToReadFile $exception) {
+            throw new FsException($exception->getMessage(), 0, $exception);
+        }
+
+        return $contents;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function writeFileFromStream(string $path, $stream, array $config = []): void
     {
