@@ -110,7 +110,7 @@ abstract class FlysystemFs extends Fs
         } catch (FilesystemException | UnableToWriteFile $exception) {
             throw new FsException("Unable to write to “{$path}”", 0, $exception);
         }
-}
+    }
 
     /**
      * @inheritdoc
