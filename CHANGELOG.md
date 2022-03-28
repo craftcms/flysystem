@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 1.0.0-beta.2 - 2022-03-28
 
 ### Added
 - Added `craft\flysystem\base\FlysystemFs::read()`
