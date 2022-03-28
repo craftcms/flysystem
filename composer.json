@@ -1,5 +1,5 @@
 {
-  "name": "craftcms/craft-flysystem",
+  "name": "craftcms/flysystem",
   "description": "Base Flysystem implementation for Craft CMS",
   "keywords": [
     "flysystem",
@@ -15,10 +15,10 @@
   ],
   "support": {
     "email": "support@craftcms.com",
-    "issues": "https://github.com/craftcms/craft-flysystem/issues?state=open",
-    "source": "https://github.com/craftcms/craft-flysystem",
-    "docs": "https://github.com/craftcms/craft-flysystem",
-    "rss": "https://github.com/craftcms/craft-flysystem/commits/master.atom"
+    "issues": "https://github.com/craftcms/flysystem/issues?state=open",
+    "source": "https://github.com/craftcms/flysystem",
+    "docs": "https://github.com/craftcms/flysystem",
+    "rss": "https://github.com/craftcms/flysystem/commits/master.atom"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
