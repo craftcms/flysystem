@@ -3,6 +3,7 @@
 .github/ export-ignore
 composer.lock export-ignore
 CHANGELOG.md export-ignore
+ecs.php export-ignore
 LICENSE.md export-ignore
 README.md export-ignore
 
