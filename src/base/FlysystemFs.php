@@ -212,7 +212,7 @@ abstract class FlysystemFs extends Fs
     {
         try {
             // Calling adapter directly instead of filesystem to avoid losing the trailing slash (if any)
-            return $this->adapter()->fileExists(rtrim($path, '/') . ($this->foldersHaveTrailingSlashes ? '/' : ''));
+            return $this->adapter()->directoryExists(rtrim($path, '/') . ($this->foldersHaveTrailingSlashes ? '/' : ''));
         } catch (FilesystemException $exception) {
             throw new FsException($exception->getMessage(), 0, $exception);
         }
