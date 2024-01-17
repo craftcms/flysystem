@@ -170,10 +170,11 @@ abstract class FlysystemFs extends Fs
     /**
      * @inheritdoc
      */
-    public function renameFile(string $path, string $newPath): void
+    public function renameFile(string $path, string $newPath, $config = []): void
     {
         try {
-            $this->filesystem()->move($path, $newPath);
+            $config = $this->addFileMetadataToConfig($config);
+            $this->filesystem()->move($path, $newPath, $config);
         } catch (FilesystemException | UnableToMoveFile $exception) {
             throw new FsException($exception->getMessage(), 0, $exception);
         }
@@ -182,10 +183,11 @@ abstract class FlysystemFs extends Fs
     /**
      * @inheritdoc
      */
-    public function copyFile(string $path, string $newPath): void
+    public function copyFile(string $path, string $newPath, $config = []): void
     {
         try {
-            $this->filesystem()->copy($path, $newPath);
+            $config = $this->addFileMetadataToConfig($config);
+            $this->filesystem()->copy($path, $newPath, $config);
         } catch (FilesystemException | UnableToCopyFile $exception) {
             throw new FsException($exception->getMessage(), 0, $exception);
         }
