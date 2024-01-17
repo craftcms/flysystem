@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 1.0.1 - 2024-01-17
 
 - Added support for Craft 5
 - Added config arguments to `craft\flysystem\base\FlysystemFs::renameFile()` and `craft\flysystem\base\FlysystemFs::copyFile()`. ([#12](https://github.com/craftcms/flysystem/pull/9))
