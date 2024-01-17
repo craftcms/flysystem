@@ -23,7 +23,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^8.0.2",
+    "php": "^8.2",
     "craftcms/cms": "^5.0.0-alpha.6",
     "league/flysystem": "^3.0.0"
   },
@@ -44,7 +44,7 @@
   },
   "config": {
     "platform": {
-      "php": "8.0.2"
+      "php": "8.2"
     },
     "allow-plugins": {
       "yiisoft/yii2-composer": true,
