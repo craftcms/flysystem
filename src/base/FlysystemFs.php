@@ -178,6 +178,8 @@ abstract class FlysystemFs extends Fs
         } catch (FilesystemException | UnableToMoveFile $exception) {
             throw new FsException($exception->getMessage(), 0, $exception);
         }
+
+        $this->invalidateCdnPath($path);
     }
 
     /**
@@ -242,6 +244,8 @@ abstract class FlysystemFs extends Fs
         } catch (FilesystemException | UnableToDeleteDirectory $exception) {
             throw new FsException($exception->getMessage(), 0, $exception);
         }
+
+        $this->invalidateCdnPath($path);
     }
 
     /**
