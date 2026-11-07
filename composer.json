@@ -24,7 +24,7 @@
   "prefer-stable": true,
   "require": {
     "php": "^8.2",
-    "craftcms/cms": "^5.0.0-alpha.6",
+    "craftcms/cms": "^5.0.0-alpha.6|^6.0.0-alpha.1",
     "league/flysystem": "^3.0.0"
   },
   "require-dev": {

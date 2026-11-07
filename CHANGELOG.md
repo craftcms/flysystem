@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+- Added support for Craft 6 with the `craftcms/yii2-adapter` package.
+
 ## 2.0.0 - 2024-01-17
 
 - Added support for Craft 5.
